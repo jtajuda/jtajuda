@@ -16,6 +16,7 @@ export default function AdminPage() {
   const { profile, loading } = useAuth()
   const navigate = useNavigate()
   const [recls, setRecls] = useState([])
+  const [contatos, setContatos] = useState([])
   const [tab, setTab] = useState('pending')
   const [busy, setBusy] = useState({})
   const [expanded, setExpanded] = useState(null)
@@ -29,14 +30,23 @@ export default function AdminPage() {
     const { data } = await supabase
       .from('reclamacoes')
       .select('*, profiles(nome, telefone, cpf, endereco, email), reclamacao_imagens(storage_path)')
-      .eq('status', tab)
+      .eq('status', tab === 'contatos' ? 'approved' : tab)
       .order('created_at', { ascending: false })
-    setRecls(data || [])
+    if (tab !== 'contatos') setRecls(data || [])
   }, [tab])
+
+  const loadContatos = useCallback(async () => {
+    const { data } = await supabase
+      .from('contatos_empresa')
+      .select('*')
+      .order('created_at', { ascending: false })
+    setContatos(data || [])
+  }, [])
 
   const loadStats = useCallback(async () => {
     const { data: all } = await supabase.from('reclamacoes').select('status, valor')
     const { count: users } = await supabase.from('profiles').select('*', { count: 'exact', head: true })
+    const { count: novosContatos } = await supabase.from('contatos_empresa').select('*', { count: 'exact', head: true })
     if (all) {
       setStats({
         pending: all.filter(r => r.status === 'pending').length,
@@ -44,13 +54,18 @@ export default function AdminPage() {
         rejected: all.filter(r => r.status === 'rejected').length,
         total_users: users || 0,
         total_valor: all.filter(r => r.status === 'approved').reduce((s, r) => s + parseFloat(r.valor || 0), 0),
+        contatos: novosContatos || 0,
       })
     }
   }, [])
 
   useEffect(() => {
-    if (profile?.is_admin) { load(); loadStats() }
-  }, [load, loadStats, profile])
+    if (profile?.is_admin) {
+      if (tab === 'contatos') loadContatos()
+      else load()
+      loadStats()
+    }
+  }, [load, loadContatos, loadStats, profile, tab])
 
   async function setStatus(id, status) {
     setBusy(b => ({ ...b, [id]: true }))
@@ -59,16 +74,19 @@ export default function AdminPage() {
     setBusy(b => ({ ...b, [id]: false }))
   }
 
-  if (loading || !profile?.is_admin) return null
+  async function deletarContato(id) {
+    await supabase.from('contatos_empresa').delete().eq('id', id)
+    await loadContatos(); await loadStats()
+  }
 
-  const tabLabels = { pending: 'Pendentes', approved: 'Aprovadas', rejected: 'Rejeitadas' }
+  if (loading || !profile?.is_admin) return null
 
   return (
     <div className={styles.page}>
       <div className={styles.header}>
         <div>
           <h1 className={styles.title}>Painel Admin</h1>
-          <p className={styles.sub}>Gerencie as reclamações enviadas</p>
+          <p className={styles.sub}>Gerencie as reclamações e contatos</p>
         </div>
         <span className={styles.adminBadge}>ADMIN</span>
       </div>
@@ -84,7 +102,7 @@ export default function AdminPage() {
           <span className={styles.statLbl}>Aprovadas</span>
         </div>
         <div className={styles.statCard}>
-          <span className={styles.statNum} style={{ color:'#C0152A' }}>{stats.rejected}</span>
+          <span className={styles.statNum} style={{ color:'#dc3545' }}>{stats.rejected}</span>
           <span className={styles.statLbl}>Rejeitadas</span>
         </div>
         <div className={styles.statCard}>
@@ -97,73 +115,109 @@ export default function AdminPage() {
           </span>
           <span className={styles.statLbl}>Prejuízo total</span>
         </div>
+        <div className={styles.statCard} style={{ cursor:'pointer' }} onClick={() => setTab('contatos')}>
+          <span className={styles.statNum} style={{ color:'#1a6ba0' }}>{stats.contatos || 0}</span>
+          <span className={styles.statLbl}>Contatos J&T</span>
+        </div>
       </div>
 
       {/* Tabs */}
       <div className={styles.tabs}>
-        {Object.entries(tabLabels).map(([key, label]) => (
-          <button key={key} className={`${styles.tab} ${tab === key ? styles.tabActive : ''}`} onClick={() => setTab(key)}>
-            {label}
-            {key === 'pending' && stats.pending > 0 && <span className={styles.tabBadge}>{stats.pending}</span>}
+        {['pending','approved','rejected','contatos'].map(t => (
+          <button key={t} className={`${styles.tab} ${tab === t ? styles.tabActive : ''}`} onClick={() => setTab(t)}>
+            {{ pending:'Pendentes', approved:'Aprovadas', rejected:'Rejeitadas', contatos:'Contatos J&T' }[t]}
+            {t === 'pending' && stats.pending > 0 && <span className={styles.tabBadge}>{stats.pending}</span>}
+            {t === 'contatos' && stats.contatos > 0 && <span className={styles.tabBadge} style={{background:'#1a6ba0'}}>{stats.contatos}</span>}
           </button>
         ))}
       </div>
 
-      {recls.length === 0 ? (
-        <div className={styles.empty}>
-          {tab === 'pending' ? '✓ Nenhuma reclamação pendente.' : 'Nenhuma reclamação nesta categoria.'}
-        </div>
-      ) : (
-        <div className={styles.list}>
-          {recls.map(r => (
-            <div key={r.id} className={styles.card}>
-              <div className={styles.cardTop}>
-                <div className={styles.cardInfo}>
-                  <h3 className={styles.cardTitle}>{r.titulo}</h3>
-                  <div className={styles.cardMeta}>
-                    <span>🛒 {r.site}</span>
-                    {r.tipo && <span>📦 {r.tipo}</span>}
-                    <span className={styles.valor}>{fmtBRL(r.valor)}</span>
-                    <span>📅 {new Date(r.created_at).toLocaleDateString('pt-BR')}</span>
+      {/* CONTATOS */}
+      {tab === 'contatos' && (
+        contatos.length === 0 ? (
+          <div className={styles.empty}>Nenhum contato recebido ainda.</div>
+        ) : (
+          <div className={styles.list}>
+            {contatos.map(c => (
+              <div key={c.id} className={styles.contatoCard}>
+                <div className={styles.contatoTop}>
+                  <div>
+                    <div className={styles.contatoNome}>{c.nome}</div>
+                    <div className={styles.contatoData}>{new Date(c.created_at).toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit' })}</div>
                   </div>
-                  <div className={styles.cardUser}>
-                    <span>👤 <strong>{r.profiles?.nome}</strong></span>
-                    <span>📞 {r.profiles?.telefone}</span>
-                    <span>📧 {r.profiles?.email || '—'}</span>
-                    <span>📍 {r.profiles?.endereco}</span>
-                  </div>
+                  <button className={styles.btnReject} onClick={() => deletarContato(c.id)} title="Remover">✕</button>
                 </div>
-                <div className={styles.cardActions}>
-                  {tab === 'pending' && (<>
-                    <button className={styles.btnApprove} disabled={busy[r.id]} onClick={() => setStatus(r.id, 'approved')}>✓ Aprovar</button>
-                    <button className={styles.btnReject} disabled={busy[r.id]} onClick={() => setStatus(r.id, 'rejected')}>✕</button>
-                  </>)}
-                  {tab === 'approved' && <button className={styles.btnReject} disabled={busy[r.id]} onClick={() => setStatus(r.id, 'rejected')}>Remover</button>}
-                  {tab === 'rejected' && <button className={styles.btnApprove} disabled={busy[r.id]} onClick={() => setStatus(r.id, 'approved')}>Reativar</button>}
+                <div className={styles.contatoInfo}>
+                  <a href={`mailto:${c.email}`} className={styles.contatoEmail}>
+                    📧 {c.email}
+                  </a>
                 </div>
+                <div className={styles.contatoMsg}>{c.mensagem}</div>
+                <a href={`mailto:${c.email}?subject=Re: Contato J&T Lesados`} className={styles.btnResponder}>
+                  ✉ Responder por e-mail
+                </a>
               </div>
+            ))}
+          </div>
+        )
+      )}
 
-              <button className={styles.expandBtn} onClick={() => setExpanded(expanded === r.id ? null : r.id)}>
-                {expanded === r.id ? '▲ Ocultar detalhes' : '▼ Ver descrição e fotos'}
-              </button>
-
-              {expanded === r.id && (
-                <div className={styles.expandContent}>
-                  <p className={styles.cardDesc}>{r.descricao}</p>
-                  {r.reclamacao_imagens?.length > 0 && (
-                    <div className={styles.imgRow}>
-                      {r.reclamacao_imagens.map((img, i) => (
-                        <a key={i} href={getPublicUrl(img.storage_path)} target="_blank" rel="noreferrer">
-                          <img src={getPublicUrl(img.storage_path)} alt="" className={styles.imgThumb} />
-                        </a>
-                      ))}
+      {/* RECLAMAÇÕES */}
+      {tab !== 'contatos' && (
+        recls.length === 0 ? (
+          <div className={styles.empty}>
+            {tab === 'pending' ? '✓ Nenhuma reclamação pendente.' : 'Nenhuma reclamação nesta categoria.'}
+          </div>
+        ) : (
+          <div className={styles.list}>
+            {recls.map(r => (
+              <div key={r.id} className={styles.card}>
+                <div className={styles.cardTop}>
+                  <div className={styles.cardInfo}>
+                    <h3 className={styles.cardTitle}>{r.titulo}</h3>
+                    <div className={styles.cardMeta}>
+                      <span>🛒 {r.site}</span>
+                      {r.tipo && <span>📦 {r.tipo}</span>}
+                      <span className={styles.valor}>{fmtBRL(r.valor)}</span>
+                      <span>📅 {new Date(r.created_at).toLocaleDateString('pt-BR')}</span>
                     </div>
-                  )}
+                    <div className={styles.cardUser}>
+                      <span>👤 <strong>{r.profiles?.nome}</strong></span>
+                      <span>📞 {r.profiles?.telefone}</span>
+                      <span>📧 {r.profiles?.email || '—'}</span>
+                      <span>📍 {r.profiles?.endereco}</span>
+                    </div>
+                  </div>
+                  <div className={styles.cardActions}>
+                    {tab === 'pending' && (<>
+                      <button className={styles.btnApprove} disabled={busy[r.id]} onClick={() => setStatus(r.id, 'approved')}>✓ Aprovar</button>
+                      <button className={styles.btnReject} disabled={busy[r.id]} onClick={() => setStatus(r.id, 'rejected')}>✕</button>
+                    </>)}
+                    {tab === 'approved' && <button className={styles.btnReject} disabled={busy[r.id]} onClick={() => setStatus(r.id, 'rejected')}>Remover</button>}
+                    {tab === 'rejected' && <button className={styles.btnApprove} disabled={busy[r.id]} onClick={() => setStatus(r.id, 'approved')}>Reativar</button>}
+                  </div>
                 </div>
-              )}
-            </div>
-          ))}
-        </div>
+                <button className={styles.expandBtn} onClick={() => setExpanded(expanded === r.id ? null : r.id)}>
+                  {expanded === r.id ? '▲ Ocultar' : '▼ Ver descrição e fotos'}
+                </button>
+                {expanded === r.id && (
+                  <div className={styles.expandContent}>
+                    <p className={styles.cardDesc}>{r.descricao}</p>
+                    {r.reclamacao_imagens?.length > 0 && (
+                      <div className={styles.imgRow}>
+                        {r.reclamacao_imagens.map((img, i) => (
+                          <a key={i} href={getPublicUrl(img.storage_path)} target="_blank" rel="noreferrer">
+                            <img src={getPublicUrl(img.storage_path)} alt="" className={styles.imgThumb} />
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )
       )}
     </div>
   )

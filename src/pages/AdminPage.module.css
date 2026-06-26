@@ -49,3 +49,15 @@
   .cardTop { flex-direction: column; }
   .cardActions { flex-direction: row; }
 }
+
+/* Contatos */
+.contatoCard { background:#fff; border:0.5px solid rgba(0,0,0,0.1); border-left:4px solid #1a6ba0; border-radius:12px; padding:1.25rem; }
+.contatoTop { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:8px; }
+.contatoNome { font-weight:600; font-size:0.95rem; }
+.contatoData { font-size:0.75rem; color:#aaa; margin-top:2px; }
+.contatoInfo { margin-bottom:8px; }
+.contatoEmail { font-size:0.85rem; color:#1a6ba0; text-decoration:none; }
+.contatoEmail:hover { text-decoration:underline; }
+.contatoMsg { font-size:0.88rem; color:#444; line-height:1.6; background:#f8f7f4; padding:10px 14px; border-radius:8px; margin-bottom:10px; white-space:pre-wrap; }
+.btnResponder { display:inline-block; background:#1a6ba0; color:#fff; text-decoration:none; padding:7px 16px; border-radius:6px; font-size:0.82rem; font-weight:600; transition:background 0.15s; }
+.btnResponder:hover { background:#145a8a; }
