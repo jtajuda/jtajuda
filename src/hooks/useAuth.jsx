@@ -34,30 +34,43 @@ export function AuthProvider({ children }) {
     setLoading(false)
   }
 
-  // Supabase Auth usa e-mail; usamos telefone como "e-mail" fictício
-  // formato: telefone@jt-lesados.app
-  function phoneToEmail(tel) {
-    return `u${tel.replace(/\D/g, '')}@jtajuda.com`
-  }
+  async function cadastrar({ nome, cpf, endereco, telefone, email, senha }) {
+    const telLimpo = telefone.replace(/\D/g, '')
+    const cpfLimpo = cpf.replace(/\D/g, '')
 
-  async function cadastrar({ nome, cpf, endereco, telefone, senha }) {
-    const email = phoneToEmail(telefone)
+    // Verificar duplicatas antes de criar
+    const { data: telExiste } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('telefone', telLimpo)
+      .maybeSingle()
+    if (telExiste) throw new Error('Este telefone já está cadastrado.')
+
+    const { data: cpfExiste } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('cpf', cpfLimpo)
+      .maybeSingle()
+    if (cpfExiste) throw new Error('Este CPF já está cadastrado.')
+
+    // Criar usuário com e-mail real
     const { data, error } = await supabase.auth.signUp({ email, password: senha })
     if (error) throw error
 
+    // Inserir perfil
     const { error: profileError } = await supabase.from('profiles').insert({
       id: data.user.id,
       nome,
-      cpf,
+      cpf: cpfLimpo,
       endereco,
-      telefone: telefone.replace(/\D/g, ''),
+      telefone: telLimpo,
     })
     if (profileError) throw profileError
+
     return data
   }
 
-  async function login({ telefone, senha }) {
-    const email = phoneToEmail(telefone)
+  async function login({ email, senha }) {
     const { error } = await supabase.auth.signInWithPassword({ email, password: senha })
     if (error) throw error
   }
