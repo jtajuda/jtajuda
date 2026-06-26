@@ -1,13 +1,13 @@
 .card {
   background: #fff;
   border: 0.5px solid rgba(0,0,0,0.1);
-  border-radius: 12px;
-  padding: 1.25rem;
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
   cursor: pointer;
   transition: box-shadow 0.15s, transform 0.1s;
 }
 .card:hover {
-  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
   transform: translateY(-1px);
 }
 
@@ -16,18 +16,22 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
 }
 
-.title { font-weight: 600; font-size: 0.95rem; line-height: 1.3; flex: 1; }
+.title {
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.35;
+  flex: 1;
+  color: #1c1c1e;
+}
 
-.badge {
-  font-size: 0.7rem;
-  padding: 3px 10px;
-  border-radius: 20px;
+.value {
+  font-weight: 700;
+  color: #C0152A;
+  font-size: 0.95rem;
   white-space: nowrap;
-  background: #d4edda;
-  color: #155724;
   flex-shrink: 0;
 }
 
@@ -36,38 +40,39 @@
   gap: 12px;
   flex-wrap: wrap;
   font-size: 0.78rem;
-  color: #666;
-  margin-bottom: 0.5rem;
+  color: #888;
+  margin-bottom: 0.6rem;
 }
 
 .desc {
-  font-size: 0.85rem;
+  font-size: 0.87rem;
   color: #555;
-  line-height: 1.5;
+  line-height: 1.55;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  margin-bottom: 0.75rem;
 }
 
 .thumbRow {
   display: flex;
   gap: 6px;
-  margin-top: 8px;
   flex-wrap: wrap;
+  margin-bottom: 0.75rem;
 }
 
 .thumb {
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   object-fit: cover;
   border-radius: 6px;
   border: 0.5px solid #ddd;
 }
 
 .thumbMore {
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: 6px;
   background: #f0f0f0;
   display: flex;
@@ -75,60 +80,93 @@
   justify-content: center;
   font-size: 0.75rem;
   color: #888;
+  font-weight: 500;
 }
 
 .footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 0.75rem;
   padding-top: 0.75rem;
-  border-top: 0.5px solid #eee;
+  border-top: 0.5px solid #f0f0f0;
 }
 
 .author {
-  font-size: 0.78rem;
-  color: #888;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: #555;
 }
 
 .avatar {
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   background: #C0152A;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.65rem;
-  font-weight: 600;
+  font-size: 0.68rem;
+  font-weight: 700;
+  flex-shrink: 0;
 }
 
-.value { font-weight: 600; color: #C0152A; font-size: 0.88rem; }
+.avatarLg {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #C0152A;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
 
+.city { color: #999; }
+
+.readMore {
+  font-size: 0.78rem;
+  color: #C0152A;
+  font-weight: 500;
+}
+
+/* Pills */
 .pill {
-  font-size: 0.72rem;
-  padding: 3px 10px;
+  font-size: 0.75rem;
+  padding: 4px 12px;
   border-radius: 20px;
   font-weight: 500;
 }
 .pillYellow { background: #fef3cd; color: #7a5c00; }
 .pillBlue { background: #e8f4fd; color: #1a6ba0; }
-.pillRed { background: #fde8e8; color: #8b1a1a; font-weight: 600; }
+.pillRed { background: #fde8e8; color: #8b1a1a; font-weight: 700; }
+
+/* Detalhe */
+.sectionLabel {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 6px;
+  margin-top: 0.25rem;
+}
 
 .detailImgs {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .detailImg {
-  width: 80px;
-  height: 80px;
+  width: 88px;
+  height: 88px;
   object-fit: cover;
   border-radius: 8px;
   border: 0.5px solid #ddd;
@@ -136,3 +174,18 @@
   transition: opacity 0.15s;
 }
 .detailImg:hover { opacity: 0.85; }
+
+.detailFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 0.5px solid #eee;
+  padding-top: 0.75rem;
+  margin-top: 1rem;
+}
+
+.detailAuthor {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

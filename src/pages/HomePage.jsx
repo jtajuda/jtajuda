@@ -3,6 +3,8 @@ import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
 import Modal from '../components/Modal'
 import NovaReclamacaoForm from '../components/NovaReclamacaoForm'
+import LoginForm from '../components/LoginForm'
+import CadastroForm from '../components/CadastroForm'
 import ReclamacaoCard from '../components/ReclamacaoCard'
 import styles from './HomePage.module.css'
 
@@ -17,14 +19,13 @@ export default function HomePage() {
   const [reclamacoes, setReclamacoes] = useState([])
   const [stats, setStats] = useState({ total: 0, prejuizo: 0 })
   const [loading, setLoading] = useState(true)
-  const [showModal, setShowModal] = useState(false)
-  const [showLoginAlert, setShowLoginAlert] = useState(false)
+  const [modal, setModal] = useState(null) // 'reclamacao' | 'login' | 'cadastro' | null
 
   const loadData = useCallback(async () => {
     setLoading(true)
     const { data } = await supabase
       .from('reclamacoes')
-      .select('*, profiles(nome), reclamacao_imagens(storage_path)')
+      .select('*, profiles(nome, endereco), reclamacao_imagens(storage_path)')
       .eq('status', 'approved')
       .order('created_at', { ascending: false })
 
@@ -40,7 +41,6 @@ export default function HomePage() {
 
   useEffect(() => { loadData() }, [loadData])
 
-  // Realtime: recarrega quando uma reclamação for aprovada
   useEffect(() => {
     const channel = supabase
       .channel('reclamacoes-public')
@@ -50,9 +50,8 @@ export default function HomePage() {
   }, [loadData])
 
   function handleNovaRecl() {
-    if (!profile) { setShowLoginAlert(true); return }
-    setShowLoginAlert(false)
-    setShowModal(true)
+    if (!profile) { setModal('login'); return }
+    setModal('reclamacao')
   }
 
   return (
@@ -62,10 +61,10 @@ export default function HomePage() {
         <div className={styles.heroInner}>
           <span className={styles.badge}>⚠ Ação Coletiva em Andamento</span>
           <h1 className={styles.h1}>
-            Cansado de ser<br />lesado pela <span>J&T?</span>
+            Cansado de ser lesado<br />pela <span>J&T Express?</span>
           </h1>
           <p className={styles.sub}>
-            Registre sua reclamação, junte-se a outros lesados e faça parte do processo coletivo contra a J&T Express.
+            Registre sua reclamação e junte-se a outras pessoas que também sofrem o mesmo problema. Unidos somos mais fortes.
           </p>
           <div className={styles.statsBar}>
             <div className={styles.statItem}>
@@ -78,6 +77,9 @@ export default function HomePage() {
               <span className={styles.statLbl}>prejuízo<br />estimado</span>
             </div>
           </div>
+          <button className={styles.btnHero} onClick={handleNovaRecl}>
+            Registrar minha reclamação
+          </button>
         </div>
       </section>
 
@@ -90,18 +92,11 @@ export default function HomePage() {
           </button>
         </div>
 
-        {showLoginAlert && (
-          <div className={styles.alert}>
-            Você precisa estar logado para registrar uma reclamação.{' '}
-            <strong>Crie sua conta ou faça login pelo menu acima.</strong>
-          </div>
-        )}
-
         {loading ? (
           <div className={styles.empty}>Carregando reclamações...</div>
         ) : reclamacoes.length === 0 ? (
           <div className={styles.empty}>
-            <span style={{ fontSize:'2rem', display:'block', marginBottom:'0.75rem' }}>📭</span>
+            <span style={{ fontSize:'2.5rem', display:'block', marginBottom:'0.75rem' }}>📭</span>
             Nenhuma reclamação aprovada ainda. Seja o primeiro!
           </div>
         ) : (
@@ -113,8 +108,28 @@ export default function HomePage() {
         )}
       </div>
 
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Registrar reclamação">
-        <NovaReclamacaoForm onSuccess={() => { setShowModal(false); loadData() }} />
+      {/* MODAL RECLAMAÇÃO */}
+      <Modal isOpen={modal === 'reclamacao'} onClose={() => setModal(null)} title="Registrar reclamação">
+        <NovaReclamacaoForm onSuccess={() => { setModal(null); loadData() }} />
+      </Modal>
+
+      {/* MODAL LOGIN — abre quando não está logado */}
+      <Modal isOpen={modal === 'login'} onClose={() => setModal(null)} title="Entre para registrar">
+        <div style={{ marginBottom:'1rem', padding:'12px', background:'#fff8e1', borderRadius:'8px', fontSize:'0.85rem', color:'#7a5c00' }}>
+          Para registrar uma reclamação você precisa criar uma conta ou fazer login.
+        </div>
+        <LoginForm
+          onSuccess={() => setModal('reclamacao')}
+          onSwitchToCadastro={() => setModal('cadastro')}
+        />
+      </Modal>
+
+      {/* MODAL CADASTRO */}
+      <Modal isOpen={modal === 'cadastro'} onClose={() => setModal(null)} title="Criar conta">
+        <CadastroForm
+          onSuccess={() => setModal('reclamacao')}
+          onSwitchToLogin={() => setModal('login')}
+        />
       </Modal>
     </main>
   )

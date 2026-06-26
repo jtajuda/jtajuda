@@ -1,6 +1,6 @@
 .hero {
   background: #C0152A;
-  padding: 2.5rem 1.5rem 2rem;
+  padding: 3rem 1.5rem 2.5rem;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -26,24 +26,24 @@
   text-transform: uppercase;
   padding: 3px 12px;
   border-radius: 2px;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
 }
 
 .h1 {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(2.5rem, 8vw, 4.5rem);
-  line-height: 1;
+  font-size: clamp(2.6rem, 8vw, 5rem);
+  line-height: 1.05;
   color: #fff;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 .h1 span { color: #F5A623; }
 
 .sub {
-  font-size: 0.95rem;
-  color: rgba(255,255,255,0.85);
-  max-width: 520px;
-  margin: 0 auto 1.5rem;
-  line-height: 1.6;
+  font-size: 1rem;
+  color: rgba(255,255,255,0.88);
+  max-width: 540px;
+  margin: 0 auto 1.75rem;
+  line-height: 1.65;
 }
 
 .statsBar {
@@ -54,13 +54,14 @@
   border: 1px solid rgba(255,255,255,0.2);
   border-radius: 8px;
   padding: 12px 28px;
+  margin-bottom: 1.5rem;
 }
 
 .statItem { text-align: center; }
 
 .statNum {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 2rem;
+  font-size: 2.2rem;
   color: #F5A623;
   line-height: 1;
   display: block;
@@ -74,26 +75,43 @@
 
 .statDivider {
   width: 1px;
-  height: 40px;
+  height: 44px;
   background: rgba(255,255,255,0.2);
 }
 
-.content {
-  max-width: 760px;
+.btnHero {
+  display: block;
   margin: 0 auto;
-  padding: 1.5rem;
+  background: #fff;
+  color: #C0152A;
+  border: none;
+  padding: 13px 32px;
+  border-radius: 8px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+}
+.btnHero:hover { background: #f5f5f5; transform: translateY(-1px); }
+
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1.75rem 1.5rem;
 }
 
 .listHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .listTitle {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.6rem;
+  font-size: 1.7rem;
   letter-spacing: 0.5px;
 }
 
@@ -106,29 +124,25 @@
   font-family: 'Bebas Neue', sans-serif;
   font-size: 1rem;
   letter-spacing: 0.5px;
+  cursor: pointer;
   transition: background 0.15s;
 }
 .btnNova:hover { background: #a01020; }
 
-.alert {
-  background: #fef3cd;
-  color: #7a5c00;
-  border-radius: 8px;
-  padding: 10px 14px;
-  font-size: 0.85rem;
-  margin-bottom: 1rem;
-  line-height: 1.5;
-}
-
 .list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .empty {
   text-align: center;
-  padding: 3rem 1rem;
+  padding: 4rem 1rem;
   color: #888;
   font-size: 0.9rem;
+}
+
+@media (max-width: 480px) {
+  .statsBar { gap: 16px; padding: 10px 16px; }
+  .btnHero { width: 100%; }
 }
