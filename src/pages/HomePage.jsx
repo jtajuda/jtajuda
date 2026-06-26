@@ -89,9 +89,9 @@ export default function HomePage() {
     e.preventDefault()
     const { nome, email, mensagem } = contatoForm
     if (!nome || !email || !mensagem) return
-    await supabase.from('contatos_empresa').insert({ nome, email, mensagem }).catch(() => {})
-    // Fallback: também abre mailto
-    window.location.href = `mailto:ajudajtbr@gmail.com?subject=Contato JT - ${nome}&body=${encodeURIComponent(mensagem)}`
+    try {
+      await supabase.from('contatos_empresa').insert({ nome, email, mensagem })
+    } catch (_) {}
     setContatoEnviado(true)
   }
 
