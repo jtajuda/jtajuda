@@ -9,9 +9,7 @@ import ReclamacaoDetalhe from '../components/ReclamacaoDetalhe'
 import styles from './HomePage.module.css'
 
 function fmtPreview(val) {
-  if (val >= 1000000) return 'R$ ' + (val / 1000000).toFixed(1) + 'M'
-  if (val >= 1000) return 'R$ ' + Math.round(val / 1000) + 'k'
-  return 'R$ ' + val.toLocaleString('pt-BR', { minimumFractionDigits: 0 })
+  return 'R$ ' + parseFloat(val || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
 function fmtBRL(v) {
   return 'R$ ' + parseFloat(v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })
@@ -24,8 +22,13 @@ function initials(n) {
 function firstName(n) { return n?.trim().split(' ')[0] || 'Anônimo' }
 function extractCity(endereco) {
   if (!endereco) return ''
+  // Novo formato: "Rua X, 123, Bairro, Cidade/SP, CEP..."
+  const match = endereco.match(/([^,]+\/[A-Z]{2})/)
+  if (match) return match[1].trim()
+  // Formato antigo
   const parts = endereco.split(',')
-  return parts.length >= 3 ? parts[parts.length-1].trim() : endereco.split(',').pop().trim()
+  if (parts.length >= 3) return parts[parts.length - 2].trim()
+  return endereco.split(',').pop().trim()
 }
 function maskCPF(cpf) {
   if (!cpf) return ''

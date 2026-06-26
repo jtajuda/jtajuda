@@ -1,14 +1,40 @@
+.privacyBanner {
+  background: #e8f4fd;
+  border: 0.5px solid #b8d9f0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  color: #1a4f6e;
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+
+.sectionLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #C0152A;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  margin-top: 4px;
+  padding-bottom: 4px;
+  border-bottom: 0.5px solid #f0f0f0;
+}
+
+.cepWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.cepWrap input { width: 100%; }
+.cepSpinner { position: absolute; right: 10px; font-size: 0.85rem; }
+
 .inputWrap {
   position: relative;
   display: flex;
   align-items: center;
 }
-
-.inputWrap input {
-  width: 100%;
-  padding-right: 36px !important;
-}
-
+.inputWrap input { width: 100%; padding-right: 36px !important; }
 .eyeBtn {
   position: absolute;
   right: 10px;
@@ -17,7 +43,6 @@
   cursor: pointer;
   font-size: 0.9rem;
   padding: 0;
-  line-height: 1;
   color: #888;
 }
 
@@ -28,30 +53,7 @@
   margin-top: -4px;
   margin-bottom: 8px;
 }
-
-.senhaBar {
-  flex: 1;
-  height: 4px;
-  background: #e0e0e0;
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.senhaFill {
-  height: 100%;
-  border-radius: 2px;
-  transition: width 0.3s, background 0.3s;
-}
-
-.senhaLabel {
-  font-size: 0.72rem;
-  color: #888;
-  white-space: nowrap;
-}
-
-.senhaMatch {
-  font-size: 0.78rem;
-  margin-top: -4px;
-  margin-bottom: 8px;
-  font-weight: 500;
-}
+.senhaBar { flex: 1; height: 4px; background: #e0e0e0; border-radius: 2px; overflow: hidden; }
+.senhaFill { height: 100%; border-radius: 2px; transition: width 0.3s, background 0.3s; }
+.senhaLabel { font-size: 0.72rem; white-space: nowrap; font-weight: 500; }
+.senhaMatch { font-size: 0.78rem; margin-top: -4px; margin-bottom: 8px; font-weight: 500; }
