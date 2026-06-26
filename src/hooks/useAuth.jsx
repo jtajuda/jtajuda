@@ -37,7 +37,7 @@ export function AuthProvider({ children }) {
   // Supabase Auth usa e-mail; usamos telefone como "e-mail" fictício
   // formato: telefone@jt-lesados.app
   function phoneToEmail(tel) {
-    return `${tel.replace(/\D/g, '')}@jt-lesados.app`
+    return `u${tel.replace(/\D/g, '')}@jtajuda.com`
   }
 
   async function cadastrar({ nome, cpf, endereco, telefone, senha }) {
