@@ -1,0 +1,134 @@
+.hero {
+  background: #C0152A;
+  padding: 2.5rem 1.5rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg, transparent, transparent 12px,
+    rgba(0,0,0,0.04) 12px, rgba(0,0,0,0.04) 13px
+  );
+}
+.heroInner { position: relative; }
+
+.badge {
+  display: inline-block;
+  background: #F5A623;
+  color: #1c1c1e;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 12px;
+  border-radius: 2px;
+  margin-bottom: 0.75rem;
+}
+
+.h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  line-height: 1;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+.h1 span { color: #F5A623; }
+
+.sub {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.85);
+  max-width: 520px;
+  margin: 0 auto 1.5rem;
+  line-height: 1.6;
+}
+
+.statsBar {
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  padding: 12px 28px;
+}
+
+.statItem { text-align: center; }
+
+.statNum {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  color: #F5A623;
+  line-height: 1;
+  display: block;
+}
+
+.statLbl {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.3;
+}
+
+.statDivider {
+  width: 1px;
+  height: 40px;
+  background: rgba(255,255,255,0.2);
+}
+
+.content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.listHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.listTitle {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.5px;
+}
+
+.btnNova {
+  background: #C0152A;
+  color: #fff;
+  border: none;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  transition: background 0.15s;
+}
+.btnNova:hover { background: #a01020; }
+
+.alert {
+  background: #fef3cd;
+  color: #7a5c00;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #888;
+  font-size: 0.9rem;
+}

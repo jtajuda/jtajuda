@@ -1,0 +1,138 @@
+.card {
+  background: #fff;
+  border: 0.5px solid rgba(0,0,0,0.1);
+  border-radius: 12px;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: box-shadow 0.15s, transform 0.1s;
+}
+.card:hover {
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  transform: translateY(-1px);
+}
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 0.6rem;
+}
+
+.title { font-weight: 600; font-size: 0.95rem; line-height: 1.3; flex: 1; }
+
+.badge {
+  font-size: 0.7rem;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  background: #d4edda;
+  color: #155724;
+  flex-shrink: 0;
+}
+
+.meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 0.78rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.desc {
+  font-size: 0.85rem;
+  color: #555;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.thumbRow {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.thumb {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 0.5px solid #ddd;
+}
+
+.thumbMore {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 0.5px solid #eee;
+}
+
+.author {
+  font-size: 0.78rem;
+  color: #888;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #C0152A;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+.value { font-weight: 600; color: #C0152A; font-size: 0.88rem; }
+
+.pill {
+  font-size: 0.72rem;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+.pillYellow { background: #fef3cd; color: #7a5c00; }
+.pillBlue { background: #e8f4fd; color: #1a6ba0; }
+.pillRed { background: #fde8e8; color: #8b1a1a; font-weight: 600; }
+
+.detailImgs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.detailImg {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 0.5px solid #ddd;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.detailImg:hover { opacity: 0.85; }
