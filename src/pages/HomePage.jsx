@@ -5,7 +5,7 @@ import Modal from '../components/Modal'
 import NovaReclamacaoForm from '../components/NovaReclamacaoForm'
 import LoginForm from '../components/LoginForm'
 import CadastroForm from '../components/CadastroForm'
-import ReclamacaoCard from '../components/ReclamacaoCard'
+import ReclamacaoDetalhe from '../components/ReclamacaoDetalhe'
 import styles from './HomePage.module.css'
 
 function fmtPreview(val) {
@@ -13,22 +13,54 @@ function fmtPreview(val) {
   if (val >= 1000) return 'R$ ' + Math.round(val / 1000) + 'k'
   return 'R$ ' + val.toLocaleString('pt-BR', { minimumFractionDigits: 0 })
 }
+function fmtBRL(v) {
+  return 'R$ ' + parseFloat(v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })
+}
+function initials(n) {
+  if (!n) return '?'
+  const p = n.trim().split(' ')
+  return p.length > 1 ? (p[0][0] + p[p.length-1][0]).toUpperCase() : p[0][0].toUpperCase()
+}
+function firstName(n) { return n?.trim().split(' ')[0] || 'Anônimo' }
+function extractCity(endereco) {
+  if (!endereco) return ''
+  const parts = endereco.split(',')
+  return parts.length >= 3 ? parts[parts.length-1].trim() : endereco.split(',').pop().trim()
+}
+function maskCPF(cpf) {
+  if (!cpf) return ''
+  const c = cpf.replace(/\D/g,'')
+  return c.slice(0,3) + '.***.***.** '
+}
+function timeAgo(ts) {
+  const d = Math.floor((Date.now() - new Date(ts)) / 1000)
+  if (d < 60) return 'agora'
+  if (d < 3600) return Math.floor(d/60) + 'min atrás'
+  if (d < 86400) return Math.floor(d/3600) + 'h atrás'
+  return Math.floor(d/86400) + 'd atrás'
+}
+function getPublicUrl(path) {
+  const { data } = supabase.storage.from('reclamacoes-imagens').getPublicUrl(path)
+  return data.publicUrl
+}
 
 export default function HomePage() {
   const { profile } = useAuth()
   const [reclamacoes, setReclamacoes] = useState([])
   const [stats, setStats] = useState({ total: 0, prejuizo: 0 })
   const [loading, setLoading] = useState(true)
-  const [modal, setModal] = useState(null) // 'reclamacao' | 'login' | 'cadastro' | null
+  const [modal, setModal] = useState(null)
+  const [detalhe, setDetalhe] = useState(null)
+  const [contatoForm, setContatoForm] = useState({ nome:'', email:'', mensagem:'' })
+  const [contatoEnviado, setContatoEnviado] = useState(false)
 
   const loadData = useCallback(async () => {
     setLoading(true)
     const { data } = await supabase
       .from('reclamacoes')
-      .select('*, profiles(nome, endereco), reclamacao_imagens(storage_path)')
+      .select('*, profiles(nome, endereco, cpf), reclamacao_imagens(storage_path)')
       .eq('status', 'approved')
       .order('created_at', { ascending: false })
-
     if (data) {
       setReclamacoes(data)
       setStats({
@@ -42,8 +74,7 @@ export default function HomePage() {
   useEffect(() => { loadData() }, [loadData])
 
   useEffect(() => {
-    const channel = supabase
-      .channel('reclamacoes-public')
+    const channel = supabase.channel('reclamacoes-public')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'reclamacoes' }, loadData)
       .subscribe()
     return () => supabase.removeChannel(channel)
@@ -54,18 +85,24 @@ export default function HomePage() {
     setModal('reclamacao')
   }
 
+  async function enviarContato(e) {
+    e.preventDefault()
+    const { nome, email, mensagem } = contatoForm
+    if (!nome || !email || !mensagem) return
+    await supabase.from('contatos_empresa').insert({ nome, email, mensagem }).catch(() => {})
+    // Fallback: também abre mailto
+    window.location.href = `mailto:ajudajtbr@gmail.com?subject=Contato JT - ${nome}&body=${encodeURIComponent(mensagem)}`
+    setContatoEnviado(true)
+  }
+
   return (
     <main>
       {/* HERO */}
       <section className={styles.hero}>
         <div className={styles.heroInner}>
           <span className={styles.badge}>⚠ Ação Coletiva em Andamento</span>
-          <h1 className={styles.h1}>
-            Cansado de ser lesado<br />pela <span>J&T Express?</span>
-          </h1>
-          <p className={styles.sub}>
-            Registre sua reclamação e junte-se a outras pessoas que também sofrem o mesmo problema. Unidos somos mais fortes.
-          </p>
+          <h1 className={styles.h1}>Cansado de ser lesado<br />pela <span>J&T Express?</span></h1>
+          <p className={styles.sub}>Registre sua reclamação e junte-se a outras pessoas que também sofrem o mesmo problema. Unidos somos mais fortes.</p>
           <div className={styles.statsBar}>
             <div className={styles.statItem}>
               <span className={styles.statNum}>{stats.total}</span>
@@ -77,60 +114,143 @@ export default function HomePage() {
               <span className={styles.statLbl}>prejuízo<br />estimado</span>
             </div>
           </div>
-          <button className={styles.btnHero} onClick={handleNovaRecl}>
-            Registrar minha reclamação
-          </button>
+          <button className={styles.btnHero} onClick={handleNovaRecl}>Registrar minha reclamação</button>
         </div>
       </section>
 
-      {/* RECLAMAÇÕES */}
+      {/* RECLAMAÇÕES EM GRADE */}
       <div className={styles.content}>
         <div className={styles.listHeader}>
           <h2 className={styles.listTitle}>Reclamações</h2>
-          <button className={styles.btnNova} onClick={handleNovaRecl}>
-            + Nova reclamação
-          </button>
+          <button className={styles.btnNova} onClick={handleNovaRecl}>+ Nova reclamação</button>
         </div>
 
         {loading ? (
-          <div className={styles.empty}>Carregando reclamações...</div>
+          <div className={styles.empty}>Carregando...</div>
         ) : reclamacoes.length === 0 ? (
-          <div className={styles.empty}>
-            <span style={{ fontSize:'2.5rem', display:'block', marginBottom:'0.75rem' }}>📭</span>
-            Nenhuma reclamação aprovada ainda. Seja o primeiro!
-          </div>
+          <div className={styles.empty}><span style={{fontSize:'2.5rem',display:'block',marginBottom:'0.75rem'}}>📭</span>Nenhuma reclamação aprovada ainda. Seja o primeiro!</div>
         ) : (
-          <div className={styles.list}>
-            {reclamacoes.map(r => (
-              <ReclamacaoCard key={r.id} reclamacao={r} />
-            ))}
+          <div className={styles.grid}>
+            {reclamacoes.map(r => {
+              const nome = firstName(r.profiles?.nome)
+              const cidade = extractCity(r.profiles?.endereco || '')
+              const imgs = r.reclamacao_imagens || []
+              return (
+                <div key={r.id} className={styles.card} onClick={() => setDetalhe(r)}>
+                  {imgs.length > 0 && (
+                    <div className={styles.cardImg}>
+                      <img src={getPublicUrl(imgs[0].storage_path)} alt="" />
+                      {imgs.length > 1 && <span className={styles.imgCount}>+{imgs.length - 1}</span>}
+                    </div>
+                  )}
+                  <div className={styles.cardBody}>
+                    <div className={styles.cardAuthor}>
+                      <div className={styles.avatar}>{initials(r.profiles?.nome)}</div>
+                      <div>
+                        <div className={styles.authorName}>{nome}</div>
+                        {cidade && <div className={styles.authorCity}>{cidade}</div>}
+                      </div>
+                    </div>
+                    <h3 className={styles.cardTitle}>{r.titulo}</h3>
+                    <div className={styles.cardMeta}>
+                      <span>🛒 {r.site}</span>
+                      {r.tipo && <span>📦 {r.tipo}</span>}
+                    </div>
+                    <p className={styles.cardDesc}>{r.descricao}</p>
+                    <div className={styles.cardFooter}>
+                      <span className={styles.cardValor}>{fmtBRL(r.valor)}</span>
+                      <span className={styles.cardTime}>{timeAgo(r.created_at)}</span>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         )}
       </div>
 
-      {/* MODAL RECLAMAÇÃO */}
+      {/* ATA DE ASSINATURAS */}
+      <div className={styles.ataSection}>
+        <div className={styles.ataInner}>
+          <h2 className={styles.ataTitle}>📋 Ata de Assinaturas</h2>
+          <p className={styles.ataSub}>Todas as pessoas registradas nesta ação coletiva</p>
+          <div className={styles.ataList}>
+            {reclamacoes.map((r, i) => {
+              const cidade = extractCity(r.profiles?.endereco || '')
+              const cpfMask = maskCPF(r.profiles?.cpf)
+              return (
+                <div key={r.id} className={styles.ataRow}>
+                  <span className={styles.ataNum}>{String(i+1).padStart(3,'0')}</span>
+                  <div className={styles.ataInfo}>
+                    <strong>{r.profiles?.nome}</strong>
+                    {cidade && <span> · {cidade}</span>}
+                    {cpfMask && <span className={styles.ataCpf}> · CPF: {cpfMask}</span>}
+                  </div>
+                  <button className={styles.ataLink} onClick={() => setDetalhe(r)}>
+                    #{String(r.id).padStart(6,'0')} →
+                  </button>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* QUEM SOMOS */}
+      <div className={styles.sobreSection}>
+        <div className={styles.sobreInner}>
+          <h2 className={styles.sobreTitle}>Quem somos</h2>
+          <p className={styles.sobreText}>
+            Somos pessoas que sofreram muito prejuízo com a J&T Express. Diante de várias tentativas de resolução sem êxito, decidimos criar esta comunidade para relatar nossos problemas e tentar chegar até uma autoridade competente ou à própria empresa.
+          </p>
+          <p className={styles.sobreText}>
+            <strong>Lembrando que o intuito desta página não é difamar a empresa</strong>, e sim tentar chegar a uma resolução para que os métodos da empresa mudem e não aconteçam mais problemas como extraviados de mercadorias e, possivelmente, roubos internos.
+          </p>
+        </div>
+      </div>
+
+      {/* CONTATO EMPRESA */}
+      <div className={styles.contatoSection}>
+        <div className={styles.contatoInner}>
+          <h2 className={styles.contatoTitle}>Você representa a J&T Express?</h2>
+          <p className={styles.contatoSub}>Se você é funcionário ou representante da empresa e deseja entrar em contato para propor uma solução, preencha o formulário abaixo.</p>
+          {contatoEnviado ? (
+            <div className={styles.contatoSuccess}>✓ Mensagem enviada! Entraremos em contato em breve.</div>
+          ) : (
+            <form className={styles.contatoForm} onSubmit={enviarContato}>
+              <div className={styles.contatoRow}>
+                <input value={contatoForm.nome} onChange={e => setContatoForm(f=>({...f,nome:e.target.value}))} placeholder="Seu nome e cargo" required />
+                <input type="email" value={contatoForm.email} onChange={e => setContatoForm(f=>({...f,email:e.target.value}))} placeholder="E-mail corporativo" required />
+              </div>
+              <textarea value={contatoForm.mensagem} onChange={e => setContatoForm(f=>({...f,mensagem:e.target.value}))} placeholder="Descreva sua proposta ou mensagem..." required />
+              <button type="submit">Enviar mensagem</button>
+            </form>
+          )}
+        </div>
+      </div>
+
+      {/* MODAIS */}
       <Modal isOpen={modal === 'reclamacao'} onClose={() => setModal(null)} title="Registrar reclamação">
         <NovaReclamacaoForm onSuccess={() => { setModal(null); loadData() }} />
       </Modal>
-
-      {/* MODAL LOGIN — abre quando não está logado */}
       <Modal isOpen={modal === 'login'} onClose={() => setModal(null)} title="Entre para registrar">
-        <div style={{ marginBottom:'1rem', padding:'12px', background:'#fff8e1', borderRadius:'8px', fontSize:'0.85rem', color:'#7a5c00' }}>
+        <div style={{marginBottom:'1rem',padding:'12px',background:'#fff8e1',borderRadius:'8px',fontSize:'0.85rem',color:'#7a5c00'}}>
           Para registrar uma reclamação você precisa criar uma conta ou fazer login.
         </div>
-        <LoginForm
-          onSuccess={() => setModal('reclamacao')}
-          onSwitchToCadastro={() => setModal('cadastro')}
-        />
+        <LoginForm onSuccess={() => setModal('reclamacao')} onSwitchToCadastro={() => setModal('cadastro')} />
+      </Modal>
+      <Modal isOpen={modal === 'cadastro'} onClose={() => setModal(null)} title="Criar conta">
+        <CadastroForm onSuccess={() => setModal('reclamacao')} onSwitchToLogin={() => setModal('login')} />
       </Modal>
 
-      {/* MODAL CADASTRO */}
-      <Modal isOpen={modal === 'cadastro'} onClose={() => setModal(null)} title="Criar conta">
-        <CadastroForm
-          onSuccess={() => setModal('reclamacao')}
-          onSwitchToLogin={() => setModal('login')}
+      {/* DETALHE RECLAMAÇÃO */}
+      {detalhe && (
+        <ReclamacaoDetalhe
+          reclamacao={detalhe}
+          onClose={() => setDetalhe(null)}
+          onLoginRequired={() => { setDetalhe(null); setModal('login') }}
         />
-      </Modal>
+      )}
     </main>
   )
 }
