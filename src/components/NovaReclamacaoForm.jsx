@@ -5,24 +5,26 @@ import s from './Form.module.css'
 import styles from './NovaReclamacaoForm.module.css'
 
 const SITES = ['Shopee','Mercado Livre','Amazon','Shein','AliExpress','Magazine Luiza','Americanas','Outro']
+const MAX_CHARS = 5000
 
-function extractCity(endereco) {
+function extractCidadeEstado(endereco) {
   if (!endereco) return ''
+  const match = endereco.match(/([^,]+\/[A-Z]{2})/)
+  if (match) return match[1].trim()
   const parts = endereco.split(',')
-  if (parts.length >= 3) return parts[parts.length - 1].trim()
+  if (parts.length >= 3) return parts[parts.length - 2].trim()
   return endereco.split(',').pop().trim()
 }
 
 export default function NovaReclamacaoForm({ onSuccess }) {
   const { profile, session } = useAuth()
-  const [form, setForm] = useState({
-    titulo: '', site: '', outraSite: '', produto: '', valor: '', descricao: '',
-  })
+  const [form, setForm] = useState({ titulo:'', site:'', outraSite:'', rastreio:'', produto:'', valor:'', descricao:'' })
   const [images, setImages] = useState([])
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [enviado, setEnviado] = useState(false)
 
-  const cidade = extractCity(profile?.endereco || '')
+  const cidade = extractCidadeEstado(profile?.endereco || '')
 
   function set(field, value) { setForm(f => ({ ...f, [field]: value })) }
 
@@ -30,10 +32,7 @@ export default function NovaReclamacaoForm({ onSuccess }) {
     const files = Array.from(e.target.files)
     const remaining = 6 - images.length
     const toAdd = files.slice(0, remaining)
-    if (files.length > remaining) {
-      setError(`Máximo 6 imagens.`)
-      setTimeout(() => setError(''), 3000)
-    }
+    if (files.length > remaining) { setError('Máximo 6 imagens.'); setTimeout(() => setError(''), 3000) }
     toAdd.forEach(file => {
       const reader = new FileReader()
       reader.onload = ev => setImages(prev => [...prev, { file, preview: ev.target.result }])
@@ -42,9 +41,7 @@ export default function NovaReclamacaoForm({ onSuccess }) {
     e.target.value = ''
   }
 
-  function removeImg(i) {
-    setImages(prev => prev.filter((_, idx) => idx !== i))
-  }
+  function removeImg(i) { setImages(prev => prev.filter((_, idx) => idx !== i)) }
 
   async function uploadImages(reclamacaoId) {
     const paths = []
@@ -61,16 +58,11 @@ export default function NovaReclamacaoForm({ onSuccess }) {
   async function handleSubmit(e) {
     e.preventDefault()
     setError('')
-
     const siteReal = form.site === 'Outro' ? (form.outraSite.trim() || 'Outro') : form.site
-
-    if (!form.titulo || !form.site || !form.valor || !form.descricao) {
-      setError('Preencha todos os campos obrigatórios (*).'); return
-    }
-    if (form.site === 'Outro' && !form.outraSite.trim()) {
-      setError('Informe o nome da plataforma.'); return
-    }
+    if (!form.titulo || !form.site || !form.valor || !form.descricao) { setError('Preencha todos os campos obrigatórios (*).'); return }
+    if (form.site === 'Outro' && !form.outraSite.trim()) { setError('Informe o nome da plataforma.'); return }
     if (parseFloat(form.valor) <= 0) { setError('Informe um valor de prejuízo válido.'); return }
+    if (form.descricao.length > MAX_CHARS) { setError(`A descrição deve ter no máximo ${MAX_CHARS} caracteres.`); return }
 
     setLoading(true)
     try {
@@ -81,12 +73,12 @@ export default function NovaReclamacaoForm({ onSuccess }) {
           titulo: form.titulo,
           site: siteReal,
           tipo: form.produto || null,
+          rastreio: form.rastreio || null,
           valor: parseFloat(form.valor),
           descricao: form.descricao,
           status: 'pending',
         })
-        .select()
-        .single()
+        .select().single()
       if (reclError) throw reclError
 
       if (images.length > 0) {
@@ -96,12 +88,29 @@ export default function NovaReclamacaoForm({ onSuccess }) {
         if (imgError) throw imgError
       }
 
-      onSuccess()
+      setEnviado(true)
     } catch (err) {
       setError(err.message || 'Erro ao enviar reclamação.')
     } finally {
       setLoading(false)
     }
+  }
+
+  // Tela de sucesso
+  if (enviado) {
+    return (
+      <div className={styles.sucessoBox}>
+        <div className={styles.sucessoIcon}>✅</div>
+        <h3 className={styles.sucessoTitulo}>Reclamação enviada!</h3>
+        <p className={styles.sucessoTexto}>
+          Sua reclamação foi recebida e está em análise. Em poucas horas ela estará disponível na página principal após aprovação.
+        </p>
+        <p className={styles.sucessoSub}>
+          Você pode acompanhar o status em <strong>Meu painel</strong>.
+        </p>
+        <button className={styles.sucessoBtn} onClick={onSuccess}>Fechar</button>
+      </div>
+    )
   }
 
   return (
@@ -130,12 +139,7 @@ export default function NovaReclamacaoForm({ onSuccess }) {
             {SITES.map(s => <option key={s}>{s}</option>)}
           </select>
           {form.site === 'Outro' && (
-            <input
-              style={{ marginTop: 6 }}
-              value={form.outraSite}
-              onChange={e => set('outraSite', e.target.value)}
-              placeholder="Digite o nome da plataforma"
-            />
+            <input style={{marginTop:6}} value={form.outraSite} onChange={e => set('outraSite', e.target.value)} placeholder="Nome da plataforma" />
           )}
         </div>
         <div className={s.row}>
@@ -144,30 +148,39 @@ export default function NovaReclamacaoForm({ onSuccess }) {
         </div>
       </div>
 
-      <div className={s.row}>
-        <label>Produto (opcional)</label>
-        <input value={form.produto} onChange={e => set('produto', e.target.value)} placeholder="Ex: Tênis Nike, Celular Samsung, etc." />
+      <div className={s.twoCol}>
+        <div className={s.row}>
+          <label>Código de rastreio</label>
+          <input value={form.rastreio} onChange={e => set('rastreio', e.target.value)} placeholder="Ex: BR123456789BR" />
+        </div>
+        <div className={s.row}>
+          <label>Produto (opcional)</label>
+          <input value={form.produto} onChange={e => set('produto', e.target.value)} placeholder="Ex: Tênis Nike, Celular..." />
+        </div>
       </div>
 
       <div className={s.row}>
-        <label>Descrição completa da reclamação *</label>
+        <label>Descrição completa da reclamação * <span className={styles.charCount}>{form.descricao.length}/{MAX_CHARS}</span></label>
         <textarea
           value={form.descricao}
-          onChange={e => set('descricao', e.target.value)}
-          placeholder="O que aconteceu? Qual foi o problema? Tentou resolver com a J&T? Qual foi a resposta deles?"
-          style={{ minHeight: '100px' }}
+          onChange={e => e.target.value.length <= MAX_CHARS && set('descricao', e.target.value)}
+          placeholder="Descreva detalhadamente o que aconteceu. O que você comprou? Qual foi o problema? Tentou resolver com a J&T? Qual foi a resposta deles? Quanto tempo faz? Quanto você perdeu?"
+          style={{ minHeight:'140px' }}
         />
+        {form.descricao.length >= MAX_CHARS * 0.9 && (
+          <span className={styles.charWarn}>⚠ {MAX_CHARS - form.descricao.length} caracteres restantes</span>
+        )}
       </div>
 
       <div className={s.row}>
         <label>Fotos — comprovantes, print do rastreio, foto do dano, etc. (até 6)</label>
         {images.length < 6 && (
           <div className={styles.uploadArea} onClick={() => document.getElementById('img-input-recl').click()}>
-            <span style={{ fontSize: '1.8rem' }}>📷</span>
+            <span style={{fontSize:'1.8rem'}}>📷</span>
             <p>Clique para adicionar fotos <strong>({images.length}/6)</strong></p>
           </div>
         )}
-        <input id="img-input-recl" type="file" accept="image/*" multiple style={{ display:'none' }} onChange={handleImgs} />
+        <input id="img-input-recl" type="file" accept="image/*" multiple style={{display:'none'}} onChange={handleImgs} />
         {images.length > 0 && (
           <div className={styles.previewRow}>
             {images.map((img, i) => (
@@ -186,9 +199,6 @@ export default function NovaReclamacaoForm({ onSuccess }) {
       <button type="submit" className={s.submit} disabled={loading}>
         {loading ? 'Enviando...' : 'Enviar reclamação para análise'}
       </button>
-      <p style={{ fontSize:'0.75rem', color:'#999', textAlign:'center', marginTop:'0.5rem' }}>
-        Sua reclamação será revisada e publicada em breve após aprovação.
-      </p>
     </form>
   )
 }

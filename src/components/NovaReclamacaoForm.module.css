@@ -97,3 +97,14 @@
   transition: border-color 0.15s;
 }
 .addMore:hover { border-color: #C0152A; color: #C0152A; }
+
+.charCount { float:right; font-size:0.72rem; color:#aaa; font-weight:400; }
+.charWarn { font-size:0.75rem; color:#F5A623; margin-top:2px; display:block; }
+
+.sucessoBox { text-align:center; padding:1.5rem 1rem; }
+.sucessoIcon { font-size:3rem; margin-bottom:1rem; }
+.sucessoTitulo { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:0.5px; color:#28a745; margin-bottom:0.75rem; }
+.sucessoTexto { font-size:0.95rem; color:#444; line-height:1.7; margin-bottom:0.5rem; }
+.sucessoSub { font-size:0.85rem; color:#888; margin-bottom:1.5rem; }
+.sucessoBtn { background:#C0152A; color:#fff; border:none; padding:12px 32px; border-radius:8px; font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:0.5px; cursor:pointer; }
+.sucessoBtn:hover { background:#a01020; }
