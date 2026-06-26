@@ -1,0 +1,30 @@
+.page { max-width: 800px; margin: 0 auto; padding: 1.5rem; }
+
+.header { margin-bottom: 1.5rem; }
+.userCard { display: flex; align-items: center; gap: 14px; background: #fff; border: 0.5px solid rgba(0,0,0,0.1); border-radius: 12px; padding: 1.25rem; }
+.avatar { width: 52px; height: 52px; border-radius: 50%; background: #C0152A; color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; flex-shrink: 0; }
+.userName { font-weight: 600; font-size: 1rem; }
+.userEmail { font-size: 0.82rem; color: #888; margin-top: 2px; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 1.25rem; border-bottom: 1px solid rgba(0,0,0,0.1); }
+.tab { background: none; border: none; padding: 8px 16px; font-size: 0.88rem; color: #666; border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+.tab:hover { color: #333; }
+.tabActive { color: #C0152A !important; border-bottom-color: #C0152A !important; font-weight: 600; }
+.tabCount { background: #eee; color: #666; font-size: 0.7rem; padding: 1px 6px; border-radius: 10px; }
+
+.empty { text-align: center; padding: 3rem; color: #888; background: #fff; border-radius: 12px; border: 0.5px solid rgba(0,0,0,0.1); }
+.list { display: flex; flex-direction: column; gap: 12px; }
+
+.reclCard { background: #fff; border: 0.5px solid rgba(0,0,0,0.1); border-radius: 12px; padding: 1.25rem; }
+.reclTop { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
+.reclTitle { font-weight: 600; font-size: 0.95rem; flex: 1; }
+.statusBadge { font-size: 0.72rem; padding: 3px 10px; border-radius: 20px; font-weight: 600; white-space: nowrap; flex-shrink: 0; }
+.reclMeta { display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.78rem; color: #888; margin-bottom: 6px; }
+.reclDesc { font-size: 0.85rem; color: #555; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 8px; }
+.imgRow { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.imgThumb { width: 52px; height: 52px; object-fit: cover; border-radius: 6px; border: 0.5px solid #ddd; }
+.editBtn { background: none; border: 1px solid rgba(0,0,0,0.15); color: #555; padding: 5px 12px; border-radius: 6px; font-size: 0.78rem; cursor: pointer; }
+.editBtn:hover { background: #f5f5f5; border-color: #C0152A; color: #C0152A; }
+
+.dadosCard { background: #fff; border: 0.5px solid rgba(0,0,0,0.1); border-radius: 12px; padding: 1.5rem; }
+.sectionTitle { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 0.5px; margin-bottom: 1.25rem; color: #1c1c1e; }

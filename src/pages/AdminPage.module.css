@@ -1,150 +1,51 @@
-.page {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 1.5rem;
-}
+.page { max-width: 900px; margin: 0 auto; padding: 1.5rem; }
 
-.header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-}
-
-.title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 2rem;
-  letter-spacing: 0.5px;
-  color: #C0152A;
-}
-
+.header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.5rem; }
+.title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.5px; color: #C0152A; }
 .sub { font-size: 0.88rem; color: #666; margin-top: 2px; }
+.adminBadge { background: #C0152A; color: #fff; font-size: 0.7rem; padding: 3px 10px; border-radius: 4px; font-weight: 700; letter-spacing: 1px; }
 
-.adminBadge {
-  background: #C0152A;
-  color: #fff;
-  font-size: 0.7rem;
-  padding: 3px 10px;
-  border-radius: 4px;
-  font-weight: 700;
-  letter-spacing: 1px;
-}
+.statsGrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+.statCard { background: #fff; border: 0.5px solid rgba(0,0,0,0.1); border-radius: 10px; padding: 1rem; text-align: center; }
+.statNum { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; line-height: 1; display: block; color: #1c1c1e; }
+.statLbl { font-size: 0.72rem; color: #888; margin-top: 2px; display: block; }
 
-.tabs {
-  display: flex;
-  gap: 4px;
-  margin-bottom: 1.25rem;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
-}
-
-.tab {
-  background: none;
-  border: none;
-  padding: 8px 16px;
-  font-size: 0.88rem;
-  color: #666;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  transition: color 0.15s, border-color 0.15s;
-}
+.tabs { display: flex; gap: 4px; margin-bottom: 1.25rem; border-bottom: 1px solid rgba(0,0,0,0.1); }
+.tab { background: none; border: none; padding: 8px 16px; font-size: 0.88rem; color: #666; border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
 .tab:hover { color: #333; }
 .tabActive { color: #C0152A !important; border-bottom-color: #C0152A !important; font-weight: 600; }
+.tabBadge { background: #C0152A; color: #fff; font-size: 0.65rem; padding: 1px 6px; border-radius: 10px; font-weight: 700; }
 
-.empty {
-  text-align: center;
-  padding: 3rem;
-  color: #888;
-  background: #fff;
-  border-radius: 12px;
-  border: 0.5px solid rgba(0,0,0,0.1);
-}
-
+.empty { text-align: center; padding: 3rem; color: #888; background: #fff; border-radius: 12px; border: 0.5px solid rgba(0,0,0,0.1); }
 .list { display: flex; flex-direction: column; gap: 12px; }
 
-.card {
-  background: #fff;
-  border: 0.5px solid rgba(0,0,0,0.1);
-  border-left: 4px solid #C0152A;
-  border-radius: 12px;
-  padding: 1.25rem;
-}
-
-.cardTop {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 0.75rem;
-}
-
+.card { background: #fff; border: 0.5px solid rgba(0,0,0,0.1); border-left: 4px solid #C0152A; border-radius: 12px; padding: 1.25rem; }
+.cardTop { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 .cardInfo { flex: 1; min-width: 0; }
-
-.cardTitle { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
-
-.cardMeta {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  font-size: 0.78rem;
-  color: #666;
-  margin-bottom: 4px;
-}
-
+.cardTitle { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
+.cardMeta { display: flex; gap: 10px; flex-wrap: wrap; font-size: 0.78rem; color: #666; margin-bottom: 6px; }
 .valor { color: #C0152A; font-weight: 600; }
+.cardUser { display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.75rem; color: #888; background: #f8f7f4; padding: 6px 10px; border-radius: 6px; }
+.cardActions { display: flex; gap: 6px; flex-shrink: 0; flex-direction: column; }
 
-.cardUser { font-size: 0.78rem; color: #888; }
-
-.cardDesc {
-  font-size: 0.85rem;
-  color: #555;
-  line-height: 1.6;
-  border-top: 0.5px solid #f0f0f0;
-  padding-top: 0.75rem;
-}
-
-.cardActions { display: flex; gap: 6px; flex-shrink: 0; }
-
-.btnApprove {
-  background: #28a745;
-  color: #fff;
-  border: none;
-  padding: 7px 14px;
-  border-radius: 6px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  white-space: nowrap;
-  transition: background 0.15s;
-}
+.btnApprove { background: #28a745; color: #fff; border: none; padding: 7px 14px; border-radius: 6px; font-size: 0.82rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
 .btnApprove:hover:not(:disabled) { background: #1e7e34; }
 .btnApprove:disabled { opacity: 0.6; cursor: default; }
-
-.btnReject {
-  background: #dc3545;
-  color: #fff;
-  border: none;
-  padding: 7px 12px;
-  border-radius: 6px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  white-space: nowrap;
-  transition: background 0.15s;
-}
+.btnReject { background: #dc3545; color: #fff; border: none; padding: 7px 12px; border-radius: 6px; font-size: 0.82rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
 .btnReject:hover:not(:disabled) { background: #bd2130; }
 .btnReject:disabled { opacity: 0.6; cursor: default; }
 
-.imgRow {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 0.75rem;
-}
+.expandBtn { background: none; border: none; color: #888; font-size: 0.78rem; cursor: pointer; margin-top: 10px; padding: 4px 0; }
+.expandBtn:hover { color: #333; }
 
-.imgThumb {
-  width: 72px;
-  height: 72px;
-  object-fit: cover;
-  border-radius: 6px;
-  border: 0.5px solid #ddd;
-  transition: opacity 0.15s;
-}
+.expandContent { margin-top: 10px; padding-top: 10px; border-top: 0.5px solid #eee; }
+.cardDesc { font-size: 0.85rem; color: #555; line-height: 1.6; margin-bottom: 10px; white-space: pre-wrap; }
+.imgRow { display: flex; gap: 8px; flex-wrap: wrap; }
+.imgThumb { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; border: 0.5px solid #ddd; transition: opacity 0.15s; }
 .imgThumb:hover { opacity: 0.85; }
+
+@media (max-width: 600px) {
+  .statsGrid { grid-template-columns: repeat(3, 1fr); }
+  .cardTop { flex-direction: column; }
+  .cardActions { flex-direction: row; }
+}
