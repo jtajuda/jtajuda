@@ -105,7 +105,7 @@ export default function HomePage() {
         <div className={styles.avisoInner}>
           <span className={styles.avisoIcon}>🛡️</span>
           <div>
-            <strong>Serviço 100% gratuito.</strong> Não solicitamos nenhum tipo de pagamento. Buscamos a Defensoria Pública para representar todos os lesados pela J&T Express sem nenhum custo para você.
+            <strong>Este serviço é totalmente gratuito — sem nenhuma cobrança.</strong> Nossa estratégia é simples: primeiro vamos reunir o máximo de assinaturas possível, depois juntamos tudo em uma petição formal e tentamos abrir o processo coletivo junto à <strong>Defensoria Pública</strong>, para que não haja nenhum custo para ninguém.
           </div>
         </div>
       </div>
