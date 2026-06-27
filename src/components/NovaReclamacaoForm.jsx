@@ -9,7 +9,7 @@ const MAX_CHARS = 5000
 
 function extractCidadeEstado(endereco) {
   if (!endereco) return ''
-  const match = endereco.match(/([^,]+\/[A-Z]{2})/)
+  const match = endereco.match(/([^,/]+\/[A-Z]{2})/)
   if (match) return match[1].trim()
   const parts = endereco.split(',')
   if (parts.length >= 3) return parts[parts.length - 2].trim()
