@@ -199,6 +199,16 @@ export default function HomePage() {
         </div>
       </div>
 
+      {/* AVISO GRATUITO */}
+      <div className={styles.avisoSection}>
+        <div className={styles.avisoInner}>
+          <span className={styles.avisoIcon}>🛡️</span>
+          <div>
+            <strong>Este serviço é 100% gratuito.</strong> Não solicitamos nenhum tipo de pagamento. Nosso objetivo é reunir os lesados e buscar a Defensoria Pública para representar coletivamente todos os consumidores prejudicados pela J&T Express, sem nenhum custo para você.
+          </div>
+        </div>
+      </div>
+
       {/* OBJETIVOS */}
       <div className={styles.objetivosSection}>
         <div className={styles.objetivosInner}>
