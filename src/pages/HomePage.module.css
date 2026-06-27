@@ -78,3 +78,34 @@
   .grid{grid-template-columns:1fr;}
   .contatoRow{grid-template-columns:1fr;}
 }
+
+/* OBJETIVOS */
+.objetivosSection { background:#C0152A; padding:3rem 1.5rem; }
+.objetivosInner { max-width:760px; margin:0 auto; }
+.objetivosBadge { display:inline-block; background:rgba(255,255,255,0.15); color:#fff; font-size:0.78rem; font-weight:600; letter-spacing:1px; padding:4px 14px; border-radius:20px; margin-bottom:0.75rem; }
+.objetivosTitle { font-family:'Bebas Neue',sans-serif; font-size:2.5rem; color:#fff; line-height:1.05; margin-bottom:0.75rem; }
+.objetivosSub { font-size:0.95rem; color:rgba(255,255,255,0.8); line-height:1.6; margin-bottom:1.75rem; max-width:580px; }
+
+.progressBox { background:rgba(0,0,0,0.2); border-radius:12px; padding:1.25rem 1.5rem; margin-bottom:2rem; }
+.progressTop { display:flex; justify-content:space-between; margin-bottom:8px; }
+.progressAtual { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; color:#F5A623; }
+.progressMeta { font-size:0.82rem; color:rgba(255,255,255,0.5); align-self:flex-end; }
+.progressBar { height:12px; background:rgba(255,255,255,0.15); border-radius:6px; overflow:hidden; margin-bottom:6px; }
+.progressFill { height:100%; background:#F5A623; border-radius:6px; transition:width 1s ease; min-width:4px; }
+.progressPct { font-size:0.78rem; color:rgba(255,255,255,0.6); }
+
+.passosGrid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.passo { display:flex; gap:12px; background:rgba(0,0,0,0.2); border-radius:10px; padding:1rem; border:1px solid rgba(255,255,255,0.1); opacity:0.6; transition:opacity 0.3s; }
+.passoAtivo { opacity:1; border-color:rgba(245,166,35,0.4); background:rgba(245,166,35,0.1); }
+.passoNum { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; color:#F5A623; line-height:1; flex-shrink:0; width:32px; }
+.passoInfo { display:flex; flex-direction:column; gap:4px; }
+.passoInfo strong { font-size:0.88rem; color:#fff; }
+.passoInfo span { font-size:0.78rem; color:rgba(255,255,255,0.6); line-height:1.4; }
+
+/* SOBRE ATUALIZADO */
+.sobreDestaque { margin-top:1.25rem; background:#fff; border-left:4px solid #C0152A; padding:14px 18px; border-radius:0 8px 8px 0; font-size:0.95rem; color:#444; }
+
+@media(max-width:600px) {
+  .passosGrid { grid-template-columns:1fr; }
+  .objetivosTitle { font-size:1.8rem; }
+}

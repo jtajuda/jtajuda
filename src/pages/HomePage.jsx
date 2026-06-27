@@ -199,16 +199,80 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* QUEM SOMOS */}
+      {/* OBJETIVOS */}
+      <div className={styles.objetivosSection}>
+        <div className={styles.objetivosInner}>
+          <div className={styles.objetivosBadge}>🎯 Nossa Meta</div>
+          <h2 className={styles.objetivosTitle}>500 reclamações para agir</h2>
+          <p className={styles.objetivosSub}>
+            Com 500 reclamações formalizadas, consultaremos um advogado especialista em direito do consumidor para definir a melhor abordagem jurídica coletiva.
+          </p>
+
+          {/* Barra de progresso */}
+          <div className={styles.progressBox}>
+            <div className={styles.progressTop}>
+              <span className={styles.progressAtual}>{stats.total} reclamações</span>
+              <span className={styles.progressMeta}>meta: 500</span>
+            </div>
+            <div className={styles.progressBar}>
+              <div
+                className={styles.progressFill}
+                style={{ width: Math.min((stats.total / 500) * 100, 100) + '%' }}
+              />
+            </div>
+            <div className={styles.progressPct}>{Math.round((stats.total / 500) * 100)}% da meta atingida</div>
+          </div>
+
+          {/* Passos */}
+          <div className={styles.passosGrid}>
+            <div className={`${styles.passo} ${stats.total >= 1 ? styles.passoAtivo : ''}`}>
+              <div className={styles.passoNum}>1</div>
+              <div className={styles.passoInfo}>
+                <strong>Reunir lesados</strong>
+                <span>Coletar 500 reclamações formalizadas com dados e provas</span>
+              </div>
+            </div>
+            <div className={`${styles.passo} ${stats.total >= 500 ? styles.passoAtivo : ''}`}>
+              <div className={styles.passoNum}>2</div>
+              <div className={styles.passoInfo}>
+                <strong>Consulta jurídica</strong>
+                <span>Apresentar o dossiê a advogados especializados em direito do consumidor</span>
+              </div>
+            </div>
+            <div className={styles.passo}>
+              <div className={styles.passoNum}>3</div>
+              <div className={styles.passoInfo}>
+                <strong>Ação coletiva</strong>
+                <span>Levar o caso ao Procon, órgãos reguladores e imprensa</span>
+              </div>
+            </div>
+            <div className={styles.passo}>
+              <div className={styles.passoNum}>4</div>
+              <div className={styles.passoInfo}>
+                <strong>Ressarcimento</strong>
+                <span>Buscar que todos os lesados sejam devidamente indenizados</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* QUEM SOMOS / MANIFESTO */}
       <div className={styles.sobreSection}>
         <div className={styles.sobreInner}>
-          <h2 className={styles.sobreTitle}>Quem somos</h2>
+          <h2 className={styles.sobreTitle}>Quem somos e por que estamos aqui</h2>
           <p className={styles.sobreText}>
-            Somos pessoas que sofreram muito prejuízo com a J&T Express. Diante de várias tentativas de resolução sem êxito, decidimos criar esta comunidade para relatar nossos problemas e tentar chegar até uma autoridade competente ou à própria empresa.
+            Somos consumidores brasileiros que sofreram grandes prejuízos com a J&T Express. Compramos produtos em sites nacionais e internacionais — muitos vindos da China — e enfrentamos atrasos absurdos, itens extraviados, mercadorias entregues a terceiros que nada têm a ver conosco, e toda a burocracia possível para tentar reaver nosso dinheiro, sem sucesso.
           </p>
           <p className={styles.sobreText}>
-            <strong>Lembrando que o intuito desta página não é difamar a empresa</strong>, e sim tentar chegar a uma resolução para que os métodos da empresa mudem e não aconteçam mais problemas como extraviados de mercadorias e, possivelmente, roubos internos.
+            Diante de várias tentativas de resolução com a empresa, sem nenhum êxito, decidimos criar esta comunidade para reunir e formalizar esses relatos. O objetivo é que isso chegue às mãos de pessoas certas e influentes — tanto dentro da própria empresa, quanto no poder público — porque as pessoas estão sendo muito lesadas e precisam ser ouvidas.
           </p>
+          <p className={styles.sobreText}>
+            <strong>O intuito desta página não é difamar a J&T Express.</strong> É mudar esse sistema para que ele funcione melhor, e garantir que todas as pessoas que tiveram grandes prejuízos sejam devidamente ressarcidas. Queremos que os extravios parem, que as entregas a terceiros parem, e que o processo de reembolso seja justo e ágil.
+          </p>
+          <div className={styles.sobreDestaque}>
+            💬 <em>"Compramos com confiança. Queremos receber com a mesma confiança."</em>
+          </div>
         </div>
       </div>
 
