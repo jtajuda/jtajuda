@@ -17,6 +17,7 @@ export default function AdminPage() {
   const navigate = useNavigate()
   const [recls, setRecls] = useState([])
   const [contatos, setContatos] = useState([])
+  const [usuarios, setUsuarios] = useState([])
   const [tab, setTab] = useState('pending')
   const [busy, setBusy] = useState({})
   const [expanded, setExpanded] = useState(null)
@@ -36,6 +37,14 @@ export default function AdminPage() {
       .order('created_at', { ascending: false })
     setRecls(data || [])
   }, [tab])
+
+  const loadUsuarios = useCallback(async () => {
+    const { data } = await supabase
+      .from('profiles')
+      .select('*, reclamacoes(id, status)')
+      .order('created_at', { ascending: false })
+    setUsuarios(data || [])
+  }, [])
 
   const loadContatos = useCallback(async () => {
     const { data } = await supabase.from('contatos_empresa').select('*').order('created_at', { ascending: false })
@@ -61,6 +70,7 @@ export default function AdminPage() {
   useEffect(() => {
     if (!profile?.is_admin) return
     if (tab === 'contatos') loadContatos()
+    else if (tab === 'usuarios') loadUsuarios()
     else load()
     loadStats()
   }, [load, loadContatos, loadStats, profile, tab])
@@ -79,7 +89,7 @@ export default function AdminPage() {
 
   if (loading || !profile?.is_admin) return null
 
-  const tabLabels = { pending:'Pendentes', approved:'Aprovadas', rejected:'Rejeitadas', contatos:'Contatos J&T' }
+  const tabLabels = { pending:'Pendentes', approved:'Aprovadas', rejected:'Rejeitadas', usuarios:'Usuários', contatos:'Contatos J&T' }
 
   return (
     <div className={styles.page}>
@@ -114,6 +124,49 @@ export default function AdminPage() {
           </button>
         ))}
       </div>
+
+      {/* USUARIOS */}
+      {tab === 'usuarios' && (
+        usuarios.length === 0
+          ? <div className={styles.empty}>Nenhum usuário cadastrado.</div>
+          : <div className={styles.list}>
+              {usuarios.map(u => {
+                const total = u.reclamacoes?.length || 0
+                const aprovadas = u.reclamacoes?.filter(r => r.status === 'approved').length || 0
+                return (
+                  <div key={u.id} className={styles.usuarioCard}>
+                    <div className={styles.usuarioTop}>
+                      <div className={styles.usuarioAvatar}>{u.nome?.[0]?.toUpperCase() || '?'}</div>
+                      <div className={styles.usuarioInfo}>
+                        <div className={styles.usuarioNome}>{u.nome} {u.is_admin && <span className={styles.adminTag}>ADMIN</span>}</div>
+                        <div className={styles.usuarioMeta}>
+                          <span>📧 {u.email || '—'}</span>
+                          <span>📞 {u.telefone || '—'}</span>
+                        </div>
+                        <div className={styles.usuarioMeta}>
+                          <span>🪪 CPF: {u.cpf || '—'}</span>
+                          <span>📍 {u.endereco || '—'}</span>
+                        </div>
+                        <div className={styles.usuarioMeta}>
+                          <span>📅 Cadastro: {new Date(u.created_at).toLocaleDateString('pt-BR')}</span>
+                        </div>
+                      </div>
+                      <div className={styles.usuarioStats}>
+                        <div className={styles.usuarioStat}>
+                          <span className={styles.usuarioStatNum}>{total}</span>
+                          <span className={styles.usuarioStatLbl}>reclamações</span>
+                        </div>
+                        <div className={styles.usuarioStat}>
+                          <span className={styles.usuarioStatNum} style={{color:'#28a745'}}>{aprovadas}</span>
+                          <span className={styles.usuarioStatLbl}>aprovadas</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+      )}
 
       {/* CONTATOS */}
       {tab === 'contatos' && (

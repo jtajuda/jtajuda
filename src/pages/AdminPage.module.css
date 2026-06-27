@@ -52,3 +52,21 @@
   .cardActions { flex-direction:row; }
   .cardUser { flex-direction:row; flex-wrap:wrap; gap:8px; }
 }
+
+/* Usuários */
+.usuarioCard { background:#fff; border:0.5px solid rgba(0,0,0,0.1); border-left:4px solid #1a6ba0; border-radius:12px; padding:1rem; }
+.usuarioTop { display:flex; align-items:flex-start; gap:12px; }
+.usuarioAvatar { width:42px; height:42px; border-radius:50%; background:#C0152A; color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:1.3rem; flex-shrink:0; }
+.usuarioInfo { flex:1; min-width:0; }
+.usuarioNome { font-weight:600; font-size:0.95rem; margin-bottom:4px; display:flex; align-items:center; gap:6px; }
+.adminTag { background:#C0152A; color:#fff; font-size:0.6rem; padding:2px 6px; border-radius:4px; font-weight:700; letter-spacing:0.5px; }
+.usuarioMeta { display:flex; gap:12px; flex-wrap:wrap; font-size:0.75rem; color:#888; margin-bottom:3px; }
+.usuarioStats { display:flex; gap:10px; flex-shrink:0; }
+.usuarioStat { text-align:center; background:#f8f7f4; border-radius:8px; padding:6px 10px; min-width:50px; }
+.usuarioStatNum { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; color:#1c1c1e; display:block; line-height:1; }
+.usuarioStatLbl { font-size:0.65rem; color:#888; }
+
+@media(max-width:480px) {
+  .usuarioTop { flex-wrap:wrap; }
+  .usuarioStats { width:100%; justify-content:flex-start; }
+}
