@@ -108,3 +108,14 @@
 .sucessoSub { font-size:0.85rem; color:#888; margin-bottom:1.5rem; }
 .sucessoBtn { background:#C0152A; color:#fff; border:none; padding:12px 32px; border-radius:8px; font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:0.5px; cursor:pointer; }
 .sucessoBtn:hover { background:#a01020; }
+
+.sigiloBox {
+  background: #e8f4fd;
+  border: 0.5px solid #b8d9f0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  color: #1a4f6e;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}

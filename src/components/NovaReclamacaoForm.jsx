@@ -117,6 +117,11 @@ export default function NovaReclamacaoForm({ onSuccess }) {
     <form onSubmit={handleSubmit}>
       {error && <div className={s.error}>{error}</div>}
 
+      {/* Aviso sigilo */}
+      <div className={styles.sigiloBox}>
+        🔒 <strong>Seus dados estão protegidos.</strong> Apenas seu <strong>nome</strong> e <strong>cidade</strong> serão exibidos publicamente. CPF, telefone, e-mail e endereço completo ficam em sigilo total.
+      </div>
+
       {/* Info do usuário */}
       <div className={styles.userInfo}>
         <div className={styles.userAvatar}>{profile?.nome?.[0]?.toUpperCase() || '?'}</div>

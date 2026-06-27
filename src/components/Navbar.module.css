@@ -12,13 +12,26 @@
 
 .logo {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   color: #fff;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  line-height: 1;
 }
 
-.logo span { color: #F5A623; }
+.logo span {
+  color: #F5A623;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  margin-left: 6px;
+  background: rgba(245,166,35,0.15);
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid rgba(245,166,35,0.4);
+}
 
 .actions {
   display: flex;

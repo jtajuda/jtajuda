@@ -22,6 +22,7 @@ export default function CadastroForm({ onSuccess, onSwitchToLogin }) {
   })
   const [showSenha, setShowSenha] = useState(false)
   const [showConfirmar, setShowConfirmar] = useState(false)
+  const [aceite, setAceite] = useState(false)
   const [cepLoading, setCepLoading] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -61,6 +62,7 @@ export default function CadastroForm({ onSuccess, onSwitchToLogin }) {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) { setError('E-mail inválido.'); return }
     if (form.senha.length < 6) { setError('Senha deve ter ao menos 6 caracteres.'); return }
     if (form.senha !== form.confirmarSenha) { setError('As senhas não coincidem.'); return }
+    if (!aceite) { setError('Você precisa aceitar os termos para continuar.'); return }
 
     const endereco = `${form.rua}${form.numero ? ', '+form.numero : ''}, ${form.bairro ? form.bairro+', ' : ''}${form.cidade}/${form.estado}, CEP ${form.cep}`
 
@@ -87,7 +89,7 @@ export default function CadastroForm({ onSuccess, onSwitchToLogin }) {
     <form onSubmit={handleSubmit}>
       {/* Aviso de proteção de dados */}
       <div className={styles.privacyBanner}>
-        🔒 <strong>Seus dados estão protegidos.</strong> Utilizamos criptografia e armazenamento seguro. Suas informações serão usadas exclusivamente para fins do processo coletivo e nunca serão compartilhadas com terceiros.
+        🔒 <strong>Sigilo garantido.</strong> Seus dados pessoais (CPF, telefone, e-mail e endereço) serão mantidos em total sigilo e usados exclusivamente para fins do processo coletivo. <strong>Apenas seu nome e cidade serão exibidos publicamente</strong> nas reclamações aprovadas. Nenhuma outra informação será divulgada.
       </div>
 
       {error && <div className={s.error}>{error}</div>}
@@ -196,7 +198,23 @@ export default function CadastroForm({ onSuccess, onSwitchToLogin }) {
         </div>
       )}
 
-      <button type="submit" className={s.submit} disabled={loading}>
+      {/* Termo de aceite */}
+      <div className={styles.termoBox}>
+        <label className={styles.termoLabel}>
+          <input
+            type="checkbox"
+            checked={aceite}
+            onChange={e => setAceite(e.target.checked)}
+            className={styles.termoCheck}
+          />
+          <span>
+            Li e concordo com os termos desta ação coletiva. Estou ciente de que estou ingressando voluntariamente em uma iniciativa coletiva de consumidores lesados pela J&T Express, que visa buscar resolução amigável ou judicial para os prejuízos sofridos, conforme previsto pelo{' '}
+            <strong>Código de Defesa do Consumidor (Lei 8.078/90)</strong> e demais legislações aplicáveis. Autorizo o uso do meu nome e cidade para fins da ação coletiva.
+          </span>
+        </label>
+      </div>
+
+      <button type="submit" className={s.submit} disabled={loading || !aceite} style={{ opacity: aceite ? 1 : 0.6 }}>
         {loading ? 'Criando conta...' : 'Criar conta e entrar'}
       </button>
       <div className={s.divider}><span>já tem conta?</span></div>

@@ -22,7 +22,7 @@ export default function Navbar() {
   return (
     <>
       <nav className={styles.nav}>
-        <Link to="/" className={styles.logo}>Lesados <span>J&amp;T</span></Link>
+        <Link to="/" className={styles.logo}>J&amp;T EXPRESS <span>AJUDA</span></Link>
 
         <div className={styles.actions}>
           {profile ? (
