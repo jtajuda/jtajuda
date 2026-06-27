@@ -1,70 +1,54 @@
-.page { max-width: 900px; margin: 0 auto; padding: 1.5rem; }
-
-.header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.5rem; }
-.title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.5px; color: #C0152A; }
-.sub { font-size: 0.88rem; color: #666; margin-top: 2px; }
-.adminBadge { background: #C0152A; color: #fff; font-size: 0.7rem; padding: 3px 10px; border-radius: 4px; font-weight: 700; letter-spacing: 1px; }
-
-.statsGrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 1.5rem; }
-.statCard { background: #fff; border: 0.5px solid rgba(0,0,0,0.1); border-radius: 10px; padding: 1rem; text-align: center; }
-.statNum { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; line-height: 1; display: block; color: #1c1c1e; }
-.statLbl { font-size: 0.72rem; color: #888; margin-top: 2px; display: block; }
-
-.tabs { display: flex; gap: 4px; margin-bottom: 1.25rem; border-bottom: 1px solid rgba(0,0,0,0.1); }
-.tab { background: none; border: none; padding: 8px 16px; font-size: 0.88rem; color: #666; border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
-.tab:hover { color: #333; }
-.tabActive { color: #C0152A !important; border-bottom-color: #C0152A !important; font-weight: 600; }
-.tabBadge { background: #C0152A; color: #fff; font-size: 0.65rem; padding: 1px 6px; border-radius: 10px; font-weight: 700; }
-
-.empty { text-align: center; padding: 3rem; color: #888; background: #fff; border-radius: 12px; border: 0.5px solid rgba(0,0,0,0.1); }
-.list { display: flex; flex-direction: column; gap: 12px; }
-
-.card { background: #fff; border: 0.5px solid rgba(0,0,0,0.1); border-left: 4px solid #C0152A; border-radius: 12px; padding: 1.25rem; }
-.cardTop { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-.cardInfo { flex: 1; min-width: 0; }
-.cardTitle { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
-.cardMeta { display: flex; gap: 10px; flex-wrap: wrap; font-size: 0.78rem; color: #666; margin-bottom: 6px; }
-.valor { color: #C0152A; font-weight: 600; }
-.cardUser { display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.75rem; color: #888; background: #f8f7f4; padding: 6px 10px; border-radius: 6px; }
-.cardActions { display: flex; gap: 6px; flex-shrink: 0; flex-direction: column; }
-
-.btnApprove { background: #28a745; color: #fff; border: none; padding: 7px 14px; border-radius: 6px; font-size: 0.82rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
-.btnApprove:hover:not(:disabled) { background: #1e7e34; }
-.btnApprove:disabled { opacity: 0.6; cursor: default; }
-.btnReject { background: #dc3545; color: #fff; border: none; padding: 7px 12px; border-radius: 6px; font-size: 0.82rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
-.btnReject:hover:not(:disabled) { background: #bd2130; }
-.btnReject:disabled { opacity: 0.6; cursor: default; }
-
-.expandBtn { background: none; border: none; color: #888; font-size: 0.78rem; cursor: pointer; margin-top: 10px; padding: 4px 0; }
-.expandBtn:hover { color: #333; }
-
-.expandContent { margin-top: 10px; padding-top: 10px; border-top: 0.5px solid #eee; }
-.cardDesc { font-size: 0.85rem; color: #555; line-height: 1.6; margin-bottom: 10px; white-space: pre-wrap; }
-.imgRow { display: flex; gap: 8px; flex-wrap: wrap; }
-.imgThumb { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; border: 0.5px solid #ddd; transition: opacity 0.15s; }
-.imgThumb:hover { opacity: 0.85; }
-
-@media (max-width: 600px) {
-  .statsGrid { grid-template-columns: repeat(3, 1fr); }
-  .cardTop { flex-direction: column; }
-  .cardActions { flex-direction: row; }
-}
-
-/* Contatos */
-.contatoCard { background:#fff; border:0.5px solid rgba(0,0,0,0.1); border-left:4px solid #1a6ba0; border-radius:12px; padding:1.25rem; }
-.contatoTop { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:8px; }
-.contatoNome { font-weight:600; font-size:0.95rem; }
-.contatoData { font-size:0.75rem; color:#aaa; margin-top:2px; }
-.contatoInfo { margin-bottom:8px; }
-.contatoEmail { font-size:0.85rem; color:#1a6ba0; text-decoration:none; }
-.contatoEmail:hover { text-decoration:underline; }
-.contatoMsg { font-size:0.88rem; color:#444; line-height:1.6; background:#f8f7f4; padding:10px 14px; border-radius:8px; margin-bottom:10px; white-space:pre-wrap; }
-.btnResponder { display:inline-block; background:#1a6ba0; color:#fff; text-decoration:none; padding:7px 16px; border-radius:6px; font-size:0.82rem; font-weight:600; transition:background 0.15s; }
-.btnResponder:hover { background:#145a8a; }
-
-.cardCodigo { font-size:0.72rem; color:#aaa; font-family:'Bebas Neue',sans-serif; letter-spacing:1px; margin-bottom:2px; }
-.rastreioBox { background:#f0f8ff; border:0.5px solid #b8d9f0; border-radius:6px; padding:8px 12px; font-size:0.85rem; color:#1a4f6e; margin-bottom:8px; }
-
-.lightbox { position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:500; display:flex; align-items:center; justify-content:center; cursor:pointer; }
-.lightboxImg { max-width:90vw; max-height:90vh; object-fit:contain; border-radius:8px; }
+.page { max-width:900px; margin:0 auto; padding:1rem; }
+.header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:1.25rem; gap:8px; }
+.title { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:0.5px; color:#C0152A; line-height:1; }
+.sub { font-size:0.85rem; color:#666; margin-top:2px; }
+.adminBadge { background:#C0152A; color:#fff; font-size:0.68rem; padding:3px 8px; border-radius:4px; font-weight:700; letter-spacing:1px; flex-shrink:0; }
+.statsGrid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:1.25rem; }
+.statCard { background:#fff; border:0.5px solid rgba(0,0,0,0.1); border-radius:10px; padding:0.875rem 0.75rem; text-align:center; }
+.statNum { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; line-height:1; display:block; color:#1c1c1e; }
+.statLbl { font-size:0.68rem; color:#888; margin-top:2px; display:block; }
+.tabs { display:flex; gap:2px; margin-bottom:1rem; border-bottom:1px solid rgba(0,0,0,0.1); overflow-x:auto; -webkit-overflow-scrolling:touch; }
+.tab { background:none; border:none; padding:8px 12px; font-size:0.82rem; color:#666; border-bottom:2px solid transparent; margin-bottom:-1px; cursor:pointer; display:flex; align-items:center; gap:5px; white-space:nowrap; flex-shrink:0; }
+.tab:hover { color:#333; }
+.tabActive { color:#C0152A !important; border-bottom-color:#C0152A !important; font-weight:600; }
+.tabBadge { background:#C0152A; color:#fff; font-size:0.62rem; padding:1px 5px; border-radius:10px; font-weight:700; }
+.empty { text-align:center; padding:2.5rem 1rem; color:#888; background:#fff; border-radius:12px; border:0.5px solid rgba(0,0,0,0.1); font-size:0.9rem; }
+.list { display:flex; flex-direction:column; gap:10px; }
+.card { background:#fff; border:0.5px solid rgba(0,0,0,0.1); border-left:4px solid #C0152A; border-radius:12px; padding:1rem; }
+.cardTop { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:0.75rem; }
+.cardInfo { flex:1; min-width:0; }
+.cardCodigo { font-size:0.7rem; color:#aaa; font-family:'Bebas Neue',sans-serif; letter-spacing:1px; margin-bottom:2px; }
+.cardTitle { font-size:0.95rem; font-weight:600; margin-bottom:5px; line-height:1.3; }
+.cardMeta { display:flex; gap:8px; flex-wrap:wrap; font-size:0.75rem; color:#666; margin-bottom:5px; }
+.valor { color:#C0152A; font-weight:600; }
+.cardUser { font-size:0.72rem; color:#888; background:#f8f7f4; padding:6px 10px; border-radius:6px; display:flex; flex-direction:column; gap:3px; }
+.cardActions { display:flex; gap:5px; flex-direction:column; flex-shrink:0; }
+.btnApprove { background:#28a745; color:#fff; border:none; padding:7px 12px; border-radius:6px; font-size:0.78rem; font-weight:600; cursor:pointer; white-space:nowrap; }
+.btnApprove:hover:not(:disabled) { background:#1e7e34; }
+.btnApprove:disabled { opacity:0.6; }
+.btnReject { background:#dc3545; color:#fff; border:none; padding:7px 10px; border-radius:6px; font-size:0.78rem; font-weight:600; cursor:pointer; white-space:nowrap; }
+.btnReject:hover:not(:disabled) { background:#bd2130; }
+.btnReject:disabled { opacity:0.6; }
+.expandBtn { background:none; border:none; color:#888; font-size:0.75rem; cursor:pointer; padding:6px 0 2px; }
+.expandBtn:hover { color:#333; }
+.expandContent { margin-top:8px; padding-top:8px; border-top:0.5px solid #eee; }
+.cardDesc { font-size:0.85rem; color:#555; line-height:1.6; margin-bottom:10px; white-space:pre-wrap; }
+.imgRow { display:flex; gap:8px; flex-wrap:wrap; }
+.imgThumb { width:72px; height:72px; object-fit:cover; border-radius:6px; border:0.5px solid #ddd; cursor:pointer; }
+.rastreioBox { background:#f0f8ff; border:0.5px solid #b8d9f0; border-radius:6px; padding:8px 12px; font-size:0.82rem; color:#1a4f6e; margin-bottom:8px; }
+.lightbox { position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:500; display:flex; align-items:center; justify-content:center; cursor:pointer; padding:1rem; }
+.lightboxImg { max-width:100%; max-height:90vh; object-fit:contain; border-radius:8px; }
 .lightboxClose { position:absolute; top:1rem; right:1rem; background:rgba(255,255,255,0.2); border:none; color:#fff; width:36px; height:36px; border-radius:50%; font-size:1rem; cursor:pointer; }
+.contatoCard { background:#fff; border:0.5px solid rgba(0,0,0,0.1); border-left:4px solid #1a6ba0; border-radius:12px; padding:1rem; }
+.contatoTop { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:8px; gap:8px; }
+.contatoNome { font-weight:600; font-size:0.9rem; }
+.contatoData { font-size:0.72rem; color:#aaa; margin-top:2px; }
+.contatoEmail { font-size:0.82rem; color:#1a6ba0; text-decoration:none; display:block; margin-bottom:8px; }
+.contatoMsg { font-size:0.85rem; color:#444; line-height:1.6; background:#f8f7f4; padding:10px 12px; border-radius:8px; margin-bottom:10px; white-space:pre-wrap; }
+.btnResponder { display:inline-block; background:#1a6ba0; color:#fff; text-decoration:none; padding:8px 14px; border-radius:6px; font-size:0.8rem; font-weight:600; }
+
+@media(min-width:600px) {
+  .statsGrid { grid-template-columns:repeat(6,1fr); }
+  .cardActions { flex-direction:row; }
+  .cardUser { flex-direction:row; flex-wrap:wrap; gap:8px; }
+}

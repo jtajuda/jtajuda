@@ -1,4 +1,4 @@
-.row { margin-bottom: 0.9rem; }
+.row { margin-bottom: 0.85rem; }
 
 .row label {
   display: block;
@@ -12,14 +12,24 @@
 .row textarea,
 .row select {
   width: 100%;
-  padding: 9px 12px;
-  font-size: 0.88rem;
+  padding: 11px 12px;
+  font-size: 16px; /* evita zoom iOS */
+  font-family: inherit;
   background: #f8f7f4;
   color: #1c1c1e;
   border: 0.5px solid rgba(0,0,0,0.2);
   border-radius: 8px;
   outline: none;
   transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.row select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
 }
 
 .row input:focus,
@@ -39,16 +49,17 @@
 
 .submit {
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   background: #C0152A;
   color: #fff;
   border: none;
   border-radius: 8px;
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   letter-spacing: 0.5px;
   margin-top: 0.5rem;
   transition: background 0.15s;
+  -webkit-tap-highlight-color: transparent;
 }
 .submit:hover:not(:disabled) { background: #a01020; }
 .submit:disabled { background: #aaa; cursor: default; }
@@ -76,9 +87,10 @@
   background: none;
   border: none;
   color: #C0152A;
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   text-decoration: underline;
-  padding: 0;
+  padding: 4px 0;
+  cursor: pointer;
 }
 
 .error {
@@ -86,10 +98,11 @@
   color: #8b1a1a;
   border-radius: 8px;
   padding: 10px 14px;
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   margin-bottom: 0.75rem;
+  line-height: 1.4;
 }
 
-@media (max-width: 480px) {
+@media(max-width:480px) {
   .twoCol { grid-template-columns: 1fr; }
 }

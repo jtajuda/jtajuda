@@ -1,6 +1,6 @@
 .nav {
   background: #C0152A;
-  padding: 0 1.5rem;
+  padding: 0 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -12,7 +12,7 @@
 
 .logo {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #fff;
   letter-spacing: 2px;
   text-decoration: none;
@@ -20,11 +20,12 @@
   align-items: center;
   gap: 0;
   line-height: 1;
+  white-space: nowrap;
 }
 
 .logo span {
   color: #F5A623;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   letter-spacing: 2px;
   margin-left: 6px;
   background: rgba(245,166,35,0.15);
@@ -35,7 +36,7 @@
 
 .actions {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
 }
 
@@ -43,14 +44,15 @@
   background: rgba(255,255,255,0.15);
   color: #fff;
   border: 1px solid rgba(255,255,255,0.3);
-  padding: 5px 14px;
+  padding: 5px 10px;
   border-radius: 6px;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 500;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   transition: background 0.15s;
+  white-space: nowrap;
 }
 .btnSecondary:hover { background: rgba(255,255,255,0.25); }
 
@@ -58,21 +60,27 @@
   background: #F5A623;
   color: #1c1c1e;
   border: none;
-  padding: 5px 14px;
+  padding: 5px 10px;
   border-radius: 6px;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 600;
   transition: background 0.15s;
+  white-space: nowrap;
 }
 .btnPrimary:hover { background: #e09510; }
 
-.userInfo {
+.userWrap {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   color: #fff;
-  font-size: 0.82rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  position: relative;
 }
+.userWrap:hover { background: rgba(255,255,255,0.1); }
+.chevron { font-size: 0.6rem; color: rgba(255,255,255,0.7); }
 
 .avatar {
   width: 28px;
@@ -85,31 +93,26 @@
   justify-content: center;
   font-weight: 700;
   font-size: 0.72rem;
+  flex-shrink: 0;
 }
 
-.userName { font-weight: 500; }
-
-.userWrap {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #fff;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 6px;
-  position: relative;
+.userName {
+  font-weight: 500;
+  font-size: 0.82rem;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.userWrap:hover { background: rgba(255,255,255,0.1); }
-.chevron { font-size: 0.6rem; color: rgba(255,255,255,0.7); }
 
 .dropdown {
-  position: absolute;
+  position: fixed;
   top: 52px;
-  right: 1.5rem;
+  right: 0.5rem;
   background: #fff;
   border: 0.5px solid rgba(0,0,0,0.15);
   border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
   min-width: 180px;
   z-index: 200;
   overflow: hidden;
@@ -119,7 +122,7 @@
   display: block;
   width: 100%;
   text-align: left;
-  padding: 10px 16px;
+  padding: 12px 16px;
   font-size: 0.88rem;
   color: #333;
   text-decoration: none;
@@ -127,5 +130,7 @@
   border: none;
   cursor: pointer;
   transition: background 0.1s;
+  border-bottom: 0.5px solid #f0f0f0;
 }
+.dropItem:last-child { border-bottom: none; }
 .dropItem:hover { background: #f5f4f0; color: #C0152A; }
